@@ -38,32 +38,35 @@ const FileInput = () => {
           </form>
         </div>
         <div className="results">
-          <table>
-            <thead>
-              <tr>
-                <th>File name</th>
-                <th>Orientation</th>
-                <th>Resized</th>
-                <th>Original Width</th>
-                <th>Original Height</th>
-                <th>New Weight</th>
-                <th>New Height</th>
-              </tr>
-            </thead>
-            <tbody>
-              {processedImages.map((result) => (
-                <tr key={Math.random()}>
-                  <td>{result.name}</td>
-                  <td>{result.orientation}</td>
-                  <td>{result.resized ? "true" : "false"}</td>
-                  <td>{result.originalWidth}</td>
-                  <td>{result.originalHeight}</td>
-                  <td>{result.width}</td>
-                  <td>{result.height}</td>
+          { 
+          (processedImages != null && processedImages.length > 0) ? (
+            <table>
+              <thead>
+                <tr>
+                  <th>File name</th>
+                  <th>Orientation</th>
+                  <th>Resized</th>
+                  <th>Original Width</th>
+                  <th>Original Height</th>
+                  <th>New Weight</th>
+                  <th>New Height</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {processedImages.map((result) => (
+                  <tr key={Math.random()}>
+                    <td>{result.name}</td>
+                    <td>{result.orientation}</td>
+                    <td>{result.resized ? "true" : "false"}</td>
+                    <td>{result.originalWidth}</td>
+                    <td>{result.originalHeight}</td>
+                    <td>{result.width}</td>
+                    <td>{result.height}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : ("")}
         </div>
       </div>
     </>
