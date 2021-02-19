@@ -6,6 +6,14 @@ const FileInput = () => {
   const [images, setImages] = useState([]);
   const [processedImages, setProcessedImages] = useState([]);
 
+  const style = {
+    backgroundColor: "blueviolet",
+    height: "2rem",
+    padding: "0.2rem",
+    color: "aliceblue",
+    "borderRadius": "0.3rem"
+  };
+
   const handleInputs = (e) => {
     setImages(e.target.files);
   };
@@ -13,8 +21,8 @@ const FileInput = () => {
   const processImagesEvent = (e) => {
     e.preventDefault();
     processImages(images).then((images) => {
-      console.table(images);
       setProcessedImages(images);
+      console.table(images);
     });
   };
 
@@ -24,7 +32,7 @@ const FileInput = () => {
         <div className="input">
           <form className="fileForm" onSubmit={processImagesEvent}>
             <div className="form_control">
-              <label htmlFor="fileInput"></label>
+              <label htmlFor="fileInput"><span>Select your files</span></label>
               <input
                 type="file"
                 name=""
@@ -32,14 +40,14 @@ const FileInput = () => {
                 accept="image/jpeg"
                 onChange={handleInputs}
                 multiple
+                style={style}
               />
             </div>
-            <input type="submit" value="Send" />
+            <input type="submit" value="Send" style={style}/>
           </form>
         </div>
         <div className="results">
-          { 
-          (processedImages != null && processedImages.length > 0) ? (
+          {processedImages != null && processedImages.length > 0 ? (
             <table>
               <thead>
                 <tr>
@@ -66,7 +74,9 @@ const FileInput = () => {
                 ))}
               </tbody>
             </table>
-          ) : ("")}
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </>

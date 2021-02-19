@@ -10,7 +10,6 @@ const fileReaderPromise = (file) => {
   var fileReader = new FileReader();
   return new Promise((resolve, _reject) => {
     fileReader.onload = (readerEvent) => resolve(readerEvent);
-    console.log("file", file);
     fileReader.readAsDataURL(file);
   });
 };
@@ -20,56 +19,57 @@ const loadFileReader = async (readerEvent, imageName) => {
   const redefineImagePromise = new Promise((resolve, _reject) => {
     image.onload = () => resolve(redefineImage(image, imageName));
     image.src = readerEvent.target.result;
+    image.title = imageName;
   });
   return await redefineImagePromise;
 };
 
-const redefineImage = (image, imageName) => {
+const redefineImage = (image) => {
   const pageWidth = 796;
   const pageHeight = 1123;
   let imageWidth = image.width;
   let imageHeight = image.height;
   const isVertical = imageWidth <= imageHeight ? true : false;
-  let imageFillsPage = true;
-
+  let imageFitsInPage = true;
   let ratio = 0;
+  
   if (isVertical) {
     if (imageWidth > pageWidth) {
+      imageFitsInPage = false;
       ratio = pageWidth / imageWidth;
       imageWidth = imageWidth * ratio;
       imageHeight = imageHeight * ratio;
-      imageFillsPage = false;
     }
     if (imageHeight > pageHeight) {
+      imageFitsInPage = false;
       ratio = pageHeight / imageHeight;
       imageWidth = imageWidth * ratio;
       imageHeight = imageHeight * ratio;
-      imageFillsPage = false;
     }
   } else {
     // Horizontal
     if (imageWidth > pageHeight) {
+      imageFitsInPage = false;
       ratio = pageHeight / imageWidth;
       imageWidth = imageWidth * ratio;
       imageHeight = imageHeight * ratio;
-      imageFillsPage = false;
     }
     if (imageHeight > pageWidth) {
+      imageFitsInPage = false;
       ratio = pageWidth / imageHeight;
       imageWidth = imageWidth * ratio;
       imageHeight = imageHeight * ratio;
-      imageFillsPage = false;
     }
   }
 
   return {
-    name: imageName,
+    name: image.title,
     originalWidth: image.width,
     originalHeight: image.height,
     width: imageWidth.toFixed(2),
     height: imageHeight.toFixed(2),
     orientation: isVertical ? "VERTICAL" : "HORIZONTAL",
-    resized: !imageFillsPage,
+    resized: !imageFitsInPage,
   };
 };
 
